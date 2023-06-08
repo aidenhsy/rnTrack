@@ -1,20 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-export default function App() {
+import {
+  AccountScreen,
+  LoginScreen,
+  TrackCreateScreen,
+  TrackDetailScreen,
+  TrackListScreen,
+} from './src/screens';
+
+const Stack = createNativeStackNavigator();
+const BottomTab = createBottomTabNavigator();
+
+const getIsSignedIn = () => {
+  return false;
+};
+function Stacks() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen name="Track List" component={TrackListScreen} />
+      <Stack.Screen name="Track Detail" component={TrackDetailScreen} />
+    </Stack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  const isSignedIn = getIsSignedIn();
+
+  return (
+    <NavigationContainer>
+      {isSignedIn ? (
+        <BottomTab.Navigator>
+          <BottomTab.Screen
+            name="Track"
+            component={Stacks}
+            options={{ headerShown: false }}
+          />
+          <BottomTab.Screen name="Track Create" component={TrackCreateScreen} />
+          <BottomTab.Screen name="Account" component={AccountScreen} />
+        </BottomTab.Navigator>
+      ) : (
+        <Stack.Navigator initialRouteName="登录">
+          <Stack.Screen name="登录" component={LoginScreen} />
+        </Stack.Navigator>
+      )}
+    </NavigationContainer>
+  );
+}
