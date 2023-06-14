@@ -9,6 +9,7 @@ import {
   TrackCreateScreen,
   TrackDetailScreen,
   TrackListScreen,
+  ResolveAuthScreen,
 } from './src/screens';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useContext } from 'react';
@@ -48,9 +49,10 @@ export default function Container() {
           </BottomTab.Navigator>
         ) : (
           <Stack.Navigator
-            initialRouteName="登录"
+            initialRouteName="resolve"
             screenOptions={{ headerShown: false }}
           >
+            <Stack.Screen name="resolve" component={ResolveAuthScreen} />
             <Stack.Screen name="登录" component={LoginScreen} />
           </Stack.Navigator>
         )}
