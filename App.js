@@ -1,50 +1,14 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, { useRef } from 'react';
+import { Provider as AuthProvider } from './src/context/AuthContext';
+import { navigationRef } from './RootNavigation';
+import Container from './Container';
 
-import {
-  AccountScreen,
-  LoginScreen,
-  TrackCreateScreen,
-  TrackDetailScreen,
-  TrackListScreen,
-} from './src/screens';
-
-const Stack = createNativeStackNavigator();
-const BottomTab = createBottomTabNavigator();
-
-const getIsSignedIn = () => {
-  return false;
+const App = () => {
+  return (
+    <AuthProvider>
+      <Container ref={navigationRef} />
+    </AuthProvider>
+  );
 };
-function Stacks() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Track List" component={TrackListScreen} />
-      <Stack.Screen name="Track Detail" component={TrackDetailScreen} />
-    </Stack.Navigator>
-  );
-}
 
-export default function App() {
-  const isSignedIn = getIsSignedIn();
-
-  return (
-    <NavigationContainer>
-      {isSignedIn ? (
-        <BottomTab.Navigator>
-          <BottomTab.Screen
-            name="Track"
-            component={Stacks}
-            options={{ headerShown: false }}
-          />
-          <BottomTab.Screen name="Track Create" component={TrackCreateScreen} />
-          <BottomTab.Screen name="Account" component={AccountScreen} />
-        </BottomTab.Navigator>
-      ) : (
-        <Stack.Navigator initialRouteName="登录">
-          <Stack.Screen name="登录" component={LoginScreen} />
-        </Stack.Navigator>
-      )}
-    </NavigationContainer>
-  );
-}
+export default App;
